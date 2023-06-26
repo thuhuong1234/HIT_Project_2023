@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const memberSchema = new Schema({
-  MemberID: {
+  MemberId: {
     type: String,
     required: true,
   },
@@ -18,18 +18,20 @@ const memberSchema = new Schema({
   Image: {
     type: String,
   },
-  Address:{
-    type:String
+  Address: {
+    type: String,
   },
-  Role:{
-    type:String
+  Role: {
+    type: String,
   },
-  Password:{
-    type:String,
+  Password: {
+    type: String,
+    required: true,
   },
-  StudentCode:{
-    type:String,
-  }
+  StudentCode: {
+    type: String,
+    required: true,
+  },
 });
 const Member = mongoose.model("Member", memberSchema);
 
