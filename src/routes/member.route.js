@@ -6,6 +6,7 @@ const {
   updateMember,
   deleteMember,
 } = require("../controllers/member.controller");
+
 const MemberRouter = express.Router();
 
 MemberRouter.route('/').get(getMembers).post(createMember);

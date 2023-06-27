@@ -9,9 +9,11 @@ const getMembers = catchAsync(async (req, res) => {
 });
 
 const getMember = catchAsync(async (req, res) => {
-  const memberId = req.param.memberId;
+const memberId = req.params.memberId;
   const member = await Member.findById(memberId);
-  if (!member) throw new ApiError(httpStatus.NOTFOUND, "Member not found!");
+  if (!member){
+    throw new ApiError(httpStatus.NOT_FOUND, "Member not found!");
+  } 
   res.status(httpStatus.OK).json({ member });
 });
 
@@ -36,7 +38,7 @@ const createMember = catchAsync(async (req, res) => {
 });
 
 const updateMember = catchAsync(async (req, res) => {
-  const { memberId } = req.param;
+  const { memberId } = req.params;
   const newMember = req.body;
   const updateMember = await Member.findByIdAndUpdate(memberId, newMember);
   if (!updateMember) {
@@ -46,7 +48,7 @@ const updateMember = catchAsync(async (req, res) => {
 });
 
 const deleteMember = catchAsync(async (req, res) => {
-  const { memberId } = req.param;
+  const { memberId } = req.params;
 
   const deleteMember = await Member.findByIdAndDelete(memberId);
   if (!deleteMember) {
