@@ -1,30 +1,34 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+
 const memberSchema = new Schema({
-  Name: {
+
+  name: {
     type: String,
     required: true,
   },
-  DateOfBirth: {
+  dateOfBirth: {
     type: Date,
   },
-  Gender: {
+  gender: {
     type: String,
   },
-  Image: {
+  image: {
     type: String,
   },
-  Address: {
+  address: {
     type: String,
   },
-  Role: {
+  role: {
     type: String,
+    enums: ["leader", "member", "support"],
+    default: "member",
   },
-  Password: {
+  password: {
     type: String,
     required: true,
   },
-  StudentCode: {
+  studentCode: {
     type: String,
     required: true,
   },

@@ -1,60 +1,52 @@
 const Member = require("../models/members.model");
 const catchAsync = require("../utils/catchAsync");
-const ApiError = require("../utils/ApiError");
+const apiError = require("../utils/apiError");
 const httpStatus = require("http-status");
+const memberService = require("../services/member.service");
 
 const getMembers = catchAsync(async (req, res) => {
-  const members = await Member.find();
-  res.status(httpStatus.OK).json({ members });
+  const members = await memberService.getMembers(req.query);
+  res.json({
+    status: httpStatus.OK,
+    data: members,
+  });
 });
 
 const getMember = catchAsync(async (req, res) => {
-const memberId = req.params.memberId;
-  const member = await Member.findById(memberId);
-  if (!member){
-    throw new ApiError(httpStatus.NOT_FOUND, "Member not found!");
-  } 
-  res.status(httpStatus.OK).json({ member });
+  const { memberId } = req.params;
+  const member = await memberService.getMember(memberId);
+  res.json({
+    status: httpStatus.OK,
+    data: member,
+  });
 });
 
 const createMember = catchAsync(async (req, res) => {
   const newMember = req.body;
-  if (!newMember.Name || !newMember.Password || !newMember.StudentCode) {
-    throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      "Member's information is not enough!"
-    );
-  }
-
-  const checkMember = await Member.findOne({
-    StudentCode: newMember.StudentCode,
+  const member = await memberService.createMember(newMember);
+  res.json({
+    status: httpStatus.CREATED,
+    data: member,
   });
-  if (checkMember) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Member already exists!");
-  }
-
-  const member = await Member.create(newMember);
-  res.status(httpStatus.CREATED).json({ member });
 });
 
 const updateMember = catchAsync(async (req, res) => {
   const { memberId } = req.params;
-  const newMember = req.body;
-  const updateMember = await Member.findByIdAndUpdate(memberId, newMember);
-  if (!updateMember) {
-    throw new ApiError(httpStatus.NOTFOUND, "Member not found!");
-  }
-  res.status(httpStatus.OK).json({ updateMember });
+  const updateMember = req.body;
+  const member = await memberService.updateMember(memberId, updateMember);
+  res.json({
+    status: httpStatus.OK,
+    data: member,
+  });
 });
 
 const deleteMember = catchAsync(async (req, res) => {
   const { memberId } = req.params;
-
-  const deleteMember = await Member.findByIdAndDelete(memberId);
-  if (!deleteMember) {
-    throw new ApiError(httpStatus.NOTFOUND, "Member not found!");
-  }
-  res.status(httpStatus.OK).json({ deleteMember });
+  const member = await memberService.deleteMember(memberId);
+  res.status(httpStatus.OK).json({
+    status: httpStatus.OK,
+    data: member,
+  });
 });
 
 module.exports = {
