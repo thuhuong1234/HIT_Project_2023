@@ -1,6 +1,4 @@
-const Member = require("../models/members.model");
 const catchAsync = require("../utils/catchAsync");
-const apiError = require("../utils/apiError");
 const httpStatus = require("http-status");
 const memberService = require("../services/member.service");
 
@@ -43,7 +41,7 @@ const updateMember = catchAsync(async (req, res) => {
 const deleteMember = catchAsync(async (req, res) => {
   const { memberId } = req.params;
   const member = await memberService.deleteMember(memberId);
-  res.status(httpStatus.OK).json({
+  res.json({
     status: httpStatus.OK,
     data: member,
   });
