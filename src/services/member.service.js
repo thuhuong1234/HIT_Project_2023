@@ -16,11 +16,18 @@ const getMember = async (memberId) => {
 };
 const createMember = async (newMember) => {
   if (
-    !newMember.name || !newMember.password ||!newMember.studentCode ||!newMember.email) {
-    throw new ApiError( httpStatus.BAD_REQUEST,"Member's information is not enough!");
+    !newMember.name ||
+    !newMember.password ||
+    !newMember.studentCode ||
+    !newMember.email
+  ) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "Member's information is not enough!"
+    );
   }
 
-  if (await Member.findOne({ studentCode:newMember.studentCode })) {
+  if (await Member.findOne({ studentCode: newMember.studentCode })) {
     throw new ApiError(httpStatus.BAD_REQUEST, "StudentCode already exists!");
   }
   if (await Member.isEmailTaken(newMember.email)) {

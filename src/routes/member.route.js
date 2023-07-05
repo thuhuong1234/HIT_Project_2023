@@ -9,9 +9,10 @@ const {
 
 const MemberRouter = express.Router();
 
-MemberRouter.route('/').get(getMembers).post(createMember);
-MemberRouter.route('/:memberId')
+MemberRouter.route("/").get(getMembers).post(createMember);
+MemberRouter.route("/:memberId")
   .get(getMember)
   .put(updateMember)
   .delete(deleteMember);
+  
 module.exports = MemberRouter;

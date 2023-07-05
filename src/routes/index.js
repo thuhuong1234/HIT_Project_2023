@@ -1,14 +1,14 @@
 const express = require("express");
 const memberRouter = require("../routes/member.route");
-const authRouter= require('../routes/auth.route')
+const authRouter = require("../routes/auth.route");
 const router = express.Router();
 const routes = [
   {
-    path: '/members',
+    path: "/members",
     route: memberRouter,
   },
   {
-    path: '/auth',
+    path: "/auth",
     route: authRouter,
   },
 ];
