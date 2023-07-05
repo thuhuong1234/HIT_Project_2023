@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const validator = require("validator");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const memberSchema = new Schema(
   {
     name: {
@@ -46,6 +48,15 @@ const memberSchema = new Schema(
         }
       },
     },
+    passwordConfirm: {
+      type: String,
+      validate: {
+        validator: function (pass) {
+          return pass === this.password;
+        },
+        message: "Password is confirm",
+      },
+    },
     studentCode: {
       type: String,
       required: true,
@@ -61,6 +72,32 @@ memberSchema.statics.isEmailTaken = async function (email) {
   return !!member;
 };
 
+memberSchema.pre("save", async function (next) {
+  try {
+    const member = this;
+    if (member.isModified("password")) {
+      member.password = await bcrypt.hash(member.password, 8);
+    }
+    this.passwordConfirm = undefined;
+  } catch (err) {
+    next(err);
+  }
+  next();
+});
+
+memberSchema.methods = {
+  generateAccessToken : function () {
+    return jwt.sign(
+      {
+        memberId: this._id,
+      },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: process.env.JWT_EXPIRES_IN,
+      }
+    );
+  },
+};
 const Member = mongoose.model("Member", memberSchema);
 
 module.exports = Member;

@@ -18,6 +18,7 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use(router);
+
 app.listen(port, () => {
   console.log("Example app listening on port", `${port}`);
 });
