@@ -61,6 +61,9 @@ const memberSchema = new Schema(
       type: String,
       required: true,
     },
+    refreshToken: {
+      type: String,
+    },
   },
   {
     timestamps: true,
@@ -86,7 +89,7 @@ memberSchema.pre("save", async function (next) {
 });
 
 memberSchema.methods = {
-  generateAccessToken : function () {
+  generateAccessToken: function () {
     return jwt.sign(
       {
         memberId: this._id,
@@ -97,7 +100,23 @@ memberSchema.methods = {
       }
     );
   },
+  isPasswordMatch: async function (password) {
+    const member = this;
+    return await bcrypt.compare(password, member.password);
+  },
+  generateRefreshToken: function () {
+    return jwt.sign(
+      {
+        memberId: this._id,
+      },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: process.env.JWT_EXPIRES_IN2,
+      }
+    );
+  },
 };
+
 const Member = mongoose.model("Member", memberSchema);
 
 module.exports = Member;

@@ -2,7 +2,7 @@ const Member = require("../models/members.model");
 const ApiError = require("../utils/apiError");
 const httpStatus = require("http-status");
 const APIFeatures = require("../utils/apiFeatures");
-const validator = require('validator')
+
 const getMembers = async (query) => {
   const feature = new APIFeatures(Member.find(), query).paginate();
   return feature.query;
