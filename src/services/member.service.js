@@ -4,11 +4,16 @@ const httpStatus = require("http-status");
 const APIFeatures = require("../utils/apiFeatures");
 
 const getMembers = async (query) => {
-  const feature = new APIFeatures(Member.find(), query).paginate();
+  const feature = new APIFeatures(
+    Member.find().select("-password -refreshToken -role"),
+    query
+  ).paginate();
   return feature.query;
 };
 const getMember = async (memberId) => {
-  const member = await Member.findById(memberId);
+  const member = await Member.findById(memberId).select(
+    "-password -refreshToken -role"
+  );
   if (!member) {
     throw new ApiError(httpStatus.NOT_FOUND, "Member not found!");
   }

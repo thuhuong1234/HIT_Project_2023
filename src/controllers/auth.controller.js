@@ -1,6 +1,7 @@
 const Member = require("../models/members.model");
 const catchAsync = require("../utils/catchAsync");
 const httpStatus = require("http-status");
+const ApiError = require("../utils/apiError");
 const { memberService, authService, sendEmail } = require("../services");
 
 const register = catchAsync(async (req, res) => {
@@ -57,9 +58,40 @@ const resetPassword = catchAsync(async (req, res) => {
   });
 });
 
+const refreshAccessToken = catchAsync(async (req, res) => {
+  const cookie = req.headers.cookie;
+  if (!cookie) {
+    throw new ApiError(httpStatus.NOT_FOUND, "No refresh token in cookies");
+  }
+  const refreshToken = cookie.split("=")[1];
+  const member = await authService.refreshAccessToken(refreshToken);
+  if (!member) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Refresh token not matched");
+  }
+  const newAccessToken = member.generateAccessToken();
+  res.json({
+    status: httpStatus.OK,
+    newAccessToken,
+  });
+});
+
+const logout = catchAsync(async (req, res) => {
+  const cookie = req.cookie;
+  if (!cookie) {
+    throw new ApiError(httpStatus.NOT_FOUND, "No refresh token in cookies");
+  }
+  const refreshToken = cookie.split("=")[1];
+  await authService.logout(refreshToken, res);
+  res.json({
+    status: httpStatus.OK,
+    mes: "Logouted!",
+  });
+});
 module.exports = {
   register,
   login,
   forgotPassword,
   resetPassword,
+  refreshAccessToken,
+  logout,
 };

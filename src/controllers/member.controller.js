@@ -11,7 +11,7 @@ const getMembers = catchAsync(async (req, res) => {
 });
 
 const getMember = catchAsync(async (req, res) => {
-  const { memberId } = req.params;
+  const { memberId } = req.params ||req.member._id;
   const member = await memberService.getMember(memberId);
   res.json({
     status: httpStatus.OK,

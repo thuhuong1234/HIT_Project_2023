@@ -2,6 +2,7 @@ const Member = require("../models/members.model");
 const ApiError = require("../utils/apiError");
 const httpStatus = require("http-status");
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 
 const login = async (password, email) => {
   const member = await Member.findOne({ email });
@@ -47,9 +48,28 @@ const resetPassword = async (token) => {
   return member;
 };
 
+const refreshAccessToken = async (cookie) => {
+  const payload = jwt.verify(cookie, process.env.SECRET_KEY);
+  const memberId = payload.memberId;
+  const member = await Member.findById(memberId);
+  return member;
+};
+
+const logout = async (cookie, res) => {
+  const payload = jwt.verify(cookie, process.env.SECRET_KEY);
+  const memberId = payload.memberId;
+  await Member.findByIdAndUpdate(memberId, { refreshToken: "" }, { new: true });
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: true,
+  });
+};
+
 module.exports = {
   login,
   refreshToken,
   resetToken,
   resetPassword,
+  refreshAccessToken,
+  logout,
 };
