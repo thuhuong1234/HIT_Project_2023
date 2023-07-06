@@ -3,6 +3,7 @@ const catchAsync = require("../utils/catchAsync");
 const httpStatus = require("http-status");
 const ApiError = require("../utils/apiError");
 const jwt = require("jsonwebtoken");
+
 const authMiddleware = catchAsync(async (req, res) => {
   const authorization = req.headers.authorization;
   if (!authorization) {
@@ -12,9 +13,7 @@ const authMiddleware = catchAsync(async (req, res) => {
   const payload = jwt.verify(token, process.env.SECRET_KEY);
   const memberId = payload.memberId;
   console.log(payload);
-  const member = await Member.findById(memberId).select(
-    "-password -refreshToken -role"
-  );
+  const member = await Member.findById(memberId).select("-password -refreshToken -role");
   if (!member) {
     throw new ApiError(httpStatus.NOT_FOUND, "Member not found");
   }

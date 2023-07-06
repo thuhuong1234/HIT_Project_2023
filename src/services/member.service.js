@@ -10,6 +10,7 @@ const getMembers = async (query) => {
   ).paginate();
   return feature.query;
 };
+
 const getMember = async (memberId) => {
   const member = await Member.findById(memberId).select(
     "-password -refreshToken -role"
@@ -19,6 +20,7 @@ const getMember = async (memberId) => {
   }
   return member;
 };
+
 const createMember = async (newMember) => {
   if (
     !newMember.name ||
@@ -31,7 +33,6 @@ const createMember = async (newMember) => {
       "Member's information is not enough!"
     );
   }
-
   if (await Member.findOne({ studentCode: newMember.studentCode })) {
     throw new ApiError(httpStatus.BAD_REQUEST, "StudentCode already exists!");
   }
@@ -57,6 +58,7 @@ const deleteMember = async (memberId) => {
   }
   return member;
 };
+
 module.exports = {
   getMembers,
   getMember,
