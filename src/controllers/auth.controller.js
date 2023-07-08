@@ -76,7 +76,7 @@ const refreshAccessToken = catchAsync(async (req, res) => {
 });
 
 const logout = catchAsync(async (req, res) => {
-  const cookie = req.cookie;
+  const cookie = req.headers.cookie;
   if (!cookie) {
     throw new ApiError(httpStatus.NOT_FOUND, "No refresh token in cookies");
   }
@@ -87,6 +87,7 @@ const logout = catchAsync(async (req, res) => {
     mes: "Logouted!",
   });
 });
+
 module.exports = {
   register,
   login,

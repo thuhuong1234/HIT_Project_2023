@@ -13,11 +13,7 @@ const login = async (password, email) => {
 };
 
 const refreshToken = async (res, member, newRefreshToken) => {
-  await Member.findByIdAndUpdate(
-    member._id,
-    { refreshToken: newRefreshToken },
-    { new: true }
-  );
+  await Member.findByIdAndUpdate(member._id, { new: true });
   res.cookie("refreshToken", newRefreshToken, {
     httpOnly: true,
     maxAge: 7 * 24 * 60 * 60 * 1000,

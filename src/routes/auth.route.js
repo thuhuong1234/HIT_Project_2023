@@ -17,6 +17,6 @@ authRouter.route("/forgot-password").get(forgotPassword);
 authRouter.route("/reset-password").put(resetPassword);
 authRouter.route("/get-me").get(authMiddleware, getMember);
 authRouter.route("/refresh-access-token").post(refreshAccessToken);
-authRouter.route("/logout").get(authMiddleware, logout);
+authRouter.route("/logout").get(logout);
 
 module.exports = authRouter;

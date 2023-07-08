@@ -63,9 +63,6 @@ const memberSchema = new Schema(
       type: String,
       required: true,
     },
-    refreshToken: {
-      type: String,
-    },
     passwordChangeAt: {
       type: String,
     },
