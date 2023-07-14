@@ -18,7 +18,7 @@ mongoose
   .then(() => console.log("Connected!"))
   .catch((err) => console.log(err));
 
-app.use(router);
+app.use("/api/v1",router);
 
 app.use(cookieParser);
 

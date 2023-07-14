@@ -7,7 +7,10 @@ const getMembers = async (query) => {
   const feature = new APIFeatures(
     Member.find().select("-password -refreshToken -role"),
     query
-  ).paginate();
+  )
+    .filter()
+    .sort()
+    .paginate();
   return feature.query;
 };
 
