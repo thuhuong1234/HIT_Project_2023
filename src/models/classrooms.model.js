@@ -23,7 +23,6 @@ const classSchema = new Schema(
     logo: {
       type: String,
     },
-    members: [{ type: Schema.Types.ObjectId, ref: "Member" }],
     leader: [{ type: Schema.Types.ObjectId, ref: "Member" }],
     supports: [{ type: Schema.Types.ObjectId, ref: "Member" }],
     units: [{ type: Schema.Types.ObjectId, ref: "Unit" }],

@@ -48,7 +48,7 @@ const updateUnit = async (unitId, updateUnit) => {
     new: true,
   });
   if (!unit) {
-    throw new ApiError(httpStatus.NOTFOUND, "unit not found!");
+    throw new ApiError(httpStatus.NOTFOUND, "Unit not found!");
   }
 
   return unit;
