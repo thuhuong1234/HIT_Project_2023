@@ -1,5 +1,4 @@
 const Member = require("../models/members.model");
-const catchAsync = require("../utils/catchAsync");
 const httpStatus = require("http-status");
 const ApiError = require("../utils/apiError");
 const jwt = require("jsonwebtoken");

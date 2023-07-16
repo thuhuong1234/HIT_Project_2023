@@ -6,17 +6,18 @@ const {
   updateMember,
   deleteMember,
 } = require("../controllers/member.controller");
-const roles = require('../middleware/role.middleware')
-const authMiddleware = require('../middleware/auth.middleware')
+const roles = require("../middleware/role.middleware");
+const authMiddleware = require("../middleware/auth.middleware");
+
 const MemberRouter = express.Router();
 
-MemberRouter.route("/").get(getMembers).post(createMember);
+MemberRouter.use(authMiddleware);
+MemberRouter.route("/").get(getMembers);
 
-MemberRouter.use(authMiddleware,roles(["leader"]));
+MemberRouter.use(roles(["leader"]));
 
-MemberRouter.route("/:memberId")
-  .get(getMember)
-  .put(updateMember)
-  .delete(deleteMember);
-  
+MemberRouter.route("/").post(createMember);
+MemberRouter.route("/:memberId").get(getMember).put(updateMember).delete(deleteMember);
+
 module.exports = MemberRouter;
+
