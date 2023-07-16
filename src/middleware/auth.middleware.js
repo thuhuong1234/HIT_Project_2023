@@ -14,7 +14,7 @@ const authMiddleware = async (req, res, next) => {
     const payload = jwt.verify(token, process.env.SECRET_KEY);
     const memberId = payload.memberId;
     const member = await Member.findById(memberId).select(
-      "-password -refreshToken -role"
+      "-password -refreshToken"
     );
     if (!member) {
       throw new ApiError(httpStatus.NOT_FOUND, "Member not found");
