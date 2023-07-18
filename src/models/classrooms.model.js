@@ -9,7 +9,7 @@ const classSchema = new Schema(
     },
     description: {
       type: String,
-      required:true,
+      required: true,
     },
     quality: {
       type: String,
@@ -23,8 +23,9 @@ const classSchema = new Schema(
     logo: {
       type: String,
     },
-    leader: [{ type: Schema.Types.ObjectId, ref: "Member" }],
+    leaders: [{ type: Schema.Types.ObjectId, ref: "Member" }],
     supports: [{ type: Schema.Types.ObjectId, ref: "Member" }],
+    members: [{ type: Schema.Types.ObjectId, ref: "Member" }],
     units: [{ type: Schema.Types.ObjectId, ref: "Unit" }],
   },
   {
