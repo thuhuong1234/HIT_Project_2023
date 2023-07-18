@@ -4,7 +4,10 @@ const httpStatus = require("http-status");
 const APIFeatures = require("../utils/apiFeatures");
 
 const getMembers = async (query) => {
-  const feature = new APIFeatures(Member.find().select("-password -refreshToken -role"),query)
+  const feature = new APIFeatures(
+    Member.find().select("-password -refreshToken -role"),
+    query
+  )
     .filter()
     .sort()
     .paginate();
@@ -12,11 +15,12 @@ const getMembers = async (query) => {
 };
 
 const getMember = async (memberId) => {
-  const member = await Member.findById(memberId).select("-password -refreshToken");
+  const member = await Member.findById(memberId).select(
+    "-password -refreshToken -role"
+  );
   if (!member) {
     throw new ApiError(httpStatus.NOT_FOUND, "Member not found!");
   }
-
   return member;
 };
 
@@ -38,9 +42,7 @@ const createMember = async (newMember) => {
   if (await Member.isEmailTaken(newMember.email)) {
     throw new ApiError(httpStatus.BAD_REQUEST, "'Email already taken')!");
   }
-
   const member = await Member.create(newMember);
-
   return member;
 };
 
@@ -49,7 +51,6 @@ const updateMember = async (memberId, updateMember) => {
   if (!member) {
     throw new ApiError(httpStatus.NOTFOUND, "Member not found!");
   }
-
   return member;
 };
 
@@ -58,7 +59,6 @@ const deleteMember = async (memberId) => {
   if (!member) {
     throw new ApiError(httpStatus.NOTFOUND, "Member not found!");
   }
-
   return member;
 };
 
