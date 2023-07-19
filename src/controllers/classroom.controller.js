@@ -59,10 +59,38 @@ const deleteClassroom = catchAsync(async (req, res) => {
   });
 });
 
+const addMemberToClassroom = catchAsync(async (req, res) => {
+  const {classroomId} = req.params;
+  const {role, memberId} = req.query;
+
+  const addMemberToClassroom = await classroomService.addMemberToClassroom(classroomId, role, memberId);
+
+  res.json({
+    status:httpStatus.CREATED,
+    message:`Member added as ${role} to classroom`,
+    date:addMemberToClassroom
+  })
+});
+
+const deleteMemberFromClassroom = catchAsync(async (req, res) => {
+  const {classroomId} = req.params;
+  const {role, memberId} = req.query;
+
+  const deleteMemberFromClassroom = await classroomService.deleteMemberFromClassroom(classroomId, role, memberId);
+
+  res.json({
+    status:httpStatus.CREATED,
+    message:`Member added as ${role} to classroom`,
+    date:deleteMemberFromClassroom
+  })
+});
+
 module.exports = {
   getClassrooms,
   getClassroom,
   createClassroom,
   updateClassroom,
   deleteClassroom,
+  addMemberToClassroom,
+  deleteMemberFromClassroom
 };
