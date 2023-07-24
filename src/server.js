@@ -22,7 +22,7 @@ app.use("/api/v1",router);
 
 app.use(cookieParser);
 
-app.use("/uploads", express.static("uploads"));
+// app.use("/uploads", express.static("uploads"));
 
 app.listen(port, () => {
   console.log("Example app listening on port", `${port}`);
