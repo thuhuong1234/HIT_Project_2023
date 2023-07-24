@@ -36,7 +36,7 @@ const createMember = async (newMember) => {
     throw new ApiError(httpStatus.BAD_REQUEST, "StudentCode already exists!");
   }
   if (await Member.isEmailTaken(newMember.email)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "'Email already taken')!");
+    throw new ApiError(httpStatus.BAD_REQUEST, "Email already taken!");
   }
 
   const member = await Member.create(newMember);

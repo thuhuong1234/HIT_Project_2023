@@ -8,6 +8,7 @@ const {
 } = require("../controllers/member.controller");
 const roles = require("../middleware/role.middleware");
 const authMiddleware = require("../middleware/auth.middleware");
+const upload = require("../middleware/upload.middleware");
 
 const MemberRouter = express.Router();
 
@@ -16,8 +17,8 @@ MemberRouter.route("/").get(getMembers);
 
 MemberRouter.use(roles(["leader"]));
 
-MemberRouter.route("/").post(createMember);
-MemberRouter.route("/:memberId").get(getMember).put(updateMember).delete(deleteMember);
+MemberRouter.route("/").post(upload,createMember);
+MemberRouter.route("/:memberId").get(getMember).put(upload,updateMember).delete(deleteMember);
 
 module.exports = MemberRouter;
 

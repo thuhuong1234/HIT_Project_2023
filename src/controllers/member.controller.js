@@ -23,7 +23,10 @@ const getMember = catchAsync(async (req, res) => {
 
 const createMember = catchAsync(async (req, res) => {
   const newMember = req.body;
+  newMember.image = req.file?.filename;
+
   const member = await memberService.createMember(newMember);
+  
   res.json({
     status: httpStatus.CREATED,
     data: member,
@@ -33,7 +36,10 @@ const createMember = catchAsync(async (req, res) => {
 const updateMember = catchAsync(async (req, res) => {
   const { memberId } = req.params;
   const updateMember = req.body;
+  updateMember.image = req.file?.filename;
+  
   const member = await memberService.updateMember(memberId, updateMember);
+
   res.json({
     status: httpStatus.OK,
     data: member,
@@ -43,6 +49,7 @@ const updateMember = catchAsync(async (req, res) => {
 const deleteMember = catchAsync(async (req, res) => {
   const { memberId } = req.params;
   const member = await memberService.deleteMember(memberId);
+  
   res.json({
     status: httpStatus.OK,
     data: member,
