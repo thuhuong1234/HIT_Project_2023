@@ -56,10 +56,17 @@ const deleteMember = catchAsync(async (req, res) => {
   });
 });
 
+const exportMembersToExcelFile = catchAsync(async (req, res) => {
+  const excelFile = await memberService.exportMembersToExcelFile();
+  
+  res.download(excelFile)
+
+}); 
 module.exports = {
   getMembers,
   getMember,
   createMember,
   updateMember,
   deleteMember,
+  exportMembersToExcelFile,
 };

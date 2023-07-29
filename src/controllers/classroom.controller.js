@@ -85,6 +85,12 @@ const deleteMemberFromClassroom = catchAsync(async (req, res) => {
   })
 });
 
+const exportClassroomToExcelFile = catchAsync(async (req, res) => {
+  const excelFile = await classroomService.exportClassroomToExcelFile();
+  
+  res.download(excelFile)
+
+}); 
 module.exports = {
   getClassrooms,
   getClassroom,
@@ -92,5 +98,6 @@ module.exports = {
   updateClassroom,
   deleteClassroom,
   addMemberToClassroom,
-  deleteMemberFromClassroom
+  deleteMemberFromClassroom,
+  exportClassroomToExcelFile
 };
