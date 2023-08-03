@@ -45,7 +45,7 @@ const resetPassword = async (token) => {
 };
 
 const refreshAccessToken = async (cookie) => {
-  const payload = jwt.verify(cookie, process.env.SECRET_KEY);
+  const payload = jwt.verify(cookie, process.env.SECRET_KEY || 'super-secret');
   const memberId = payload.memberId;
   const member = await Member.findById(memberId);
   return member;

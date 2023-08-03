@@ -10,7 +10,7 @@ const authMiddleware = async (req, res, next) => {
       throw new ApiError(httpStatus.NOT_FOUND, "Unauthorized");
     }
     const token = authorization.split(" ")[1];
-    const payload = jwt.verify(token, process.env.SECRET_KEY);
+    const payload = jwt.verify(token, process.env.SECRET_KEY || 'super-secret');
     const memberId = payload.memberId;
     const member = await Member.findById(memberId).select(
       "-password -refreshToken"
