@@ -76,7 +76,7 @@ const replyComment = async (commentId, reply, req) => {
     commentBy: req.user.id,
     unit:parentComment.unit,
     content: reply,
-    parentId: parentId,
+    parentId: commentId,
   });
   await replyComment.save();
 

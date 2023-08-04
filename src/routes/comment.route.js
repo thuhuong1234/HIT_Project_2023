@@ -18,6 +18,6 @@ CommentRouter.route("/:commentId")
   .get(getComment)
   .put(updateComment)
   .delete(deleteComment)
-  .post(replyComment)
-  
+  .post(replyComment);
+
 module.exports = CommentRouter;
