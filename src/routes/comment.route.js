@@ -6,7 +6,6 @@ const {
   updateComment,
   deleteComment,
 } = require("../controllers/comment.controller");
-const roles = require("../middleware/role.middleware");
 const authMiddleware = require("../middleware/auth.middleware");
 const { replyComment } = require("../services/comment.service");
 

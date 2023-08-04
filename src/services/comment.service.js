@@ -45,12 +45,15 @@ const updateComment = async (commentId, updateComment, req) => {
   if (comment.commentBy.toString() !== req.user.id) {
     throw new ApiError(httpStatus.NOTFOUND, "Forbidden!");
   }
-  
-  await Comment.updateOne({ _id: commentId },{content:updateComment},{new:true})
 
+  await Comment.updateOne(
+    { _id: commentId },
+    { content: updateComment },
+    { new: true }
+  );
 };
 
-const deleteComment = async (commentId,req) => {
+const deleteComment = async (commentId, req) => {
   const comment = await Comment.findById(commentId);
   if (!comment) {
     throw new ApiError(httpStatus.NOTFOUND, "Comment not found!");
@@ -60,25 +63,32 @@ const deleteComment = async (commentId,req) => {
     throw new ApiError(httpStatus.NOTFOUND, "Forbidden!");
   }
 
-  await Comment.deleteOne({_id:commentId},{new:true})
+  await Comment.deleteOne({ _id: commentId }, { new: true });
 };
 
-const replyComment = async (commentId,reply)=>{
-    const comment = await Comment.findById(commentId);
-    if (!comment) {
-      throw new ApiError(httpStatus.NOTFOUND, "Comment not found!");
-    }  
-    const parentComment = await Comment.find((c) => c.id === parentId);
-    if(!parentComment){
-      throw new ApiError(httpStatus.NOTFOUND, "Parent comment not found!");
-    }
-    await Comment.create({comments:reply},{parentId:parentId},{new:true})
-}
+const replyComment = async (commentId, reply, req) => {
+  const parentComment = await Comment.findById(commentId);
+  if (!parentComment) {
+    throw new ApiError(httpStatus.NOTFOUND, "Parent comment not found!");
+  }
+  
+  const replyComment = new Comment({
+    commentBy: req.user.id,
+    unit:parentComment.unit,
+    content: reply,
+    parentId: parentId,
+  });
+  await replyComment.save();
+
+  parentComment.comments.push(replyComment);
+  await parentComment.save();
+};
+
 module.exports = {
   getComments,
   getComment,
   createComment,
   updateComment,
   deleteComment,
-  replyComment
+  replyComment,
 };
