@@ -16,6 +16,7 @@ const getClassroom = async (classroomId) => {
   const classroom = await Classroom.findById(classroomId)
     .populate("leaders", "name email -_id")
     .populate("supports", "name email -_id")
+    .populate("members", "name email -_id")
     .populate("units", "nameUnit -_id");
   if (!classroom) {
     throw new ApiError(httpStatus.NOT_FOUND, "Classroom not found!");
@@ -34,7 +35,7 @@ const createClassroom = async (newClassroom) => {
   if (await Classroom.findOne({ className: newClassroom.className })) {
     throw new ApiError(httpStatus.BAD_REQUEST, "className already exists!");
   }
-  if (!newClassroom.leader.role === "leader") {
+  if (!newClassroom.leaders.role === "leader") {
     throw new ApiError(httpStatus.BAD_REQUEST, "Leader is not correct!");
   }
   if (!newClassroom.supports.role === "support") {

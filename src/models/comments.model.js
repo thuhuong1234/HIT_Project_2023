@@ -11,14 +11,20 @@ const commentSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Member",
     },
-    parentId:{
-      type:  Schema.Types.ObjectId,
-      ref:"Comment",
-    },
-    comments:{
+    parentId: {
       type: Schema.Types.ObjectId,
-      ref:"Comment"
-    }
+      ref: "Comment",
+    },
+    comments: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
+    unit: {
+      type: Schema.Types.ObjectId,
+      ref: "Unit",
+    },
   },
   {
     timestamps: true,
