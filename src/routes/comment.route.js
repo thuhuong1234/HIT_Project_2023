@@ -5,10 +5,9 @@ const {
   createComment,
   updateComment,
   deleteComment,
+  replyComment,
 } = require("../controllers/comment.controller");
-const roles = require("../middleware/role.middleware");
 const authMiddleware = require("../middleware/auth.middleware");
-const { replyComment } = require("../services/comment.service");
 
 const CommentRouter = express.Router();
 
@@ -19,6 +18,6 @@ CommentRouter.route("/:commentId")
   .get(getComment)
   .put(updateComment)
   .delete(deleteComment)
-  .post(replyComment)
-  
+  .post(replyComment);
+
 module.exports = CommentRouter;

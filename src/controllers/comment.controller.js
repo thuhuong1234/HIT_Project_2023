@@ -24,6 +24,7 @@ const getComment = catchAsync(async (req, res) => {
 
 const createComment = catchAsync(async (req, res) => {
   const newComment = req.body;
+  newComment.commentBy = req.user.id;
 
   const comment = await commentService.createComment(newComment);
 
@@ -58,9 +59,9 @@ const deleteComment = catchAsync(async (req, res) => {
 
 const replyComment = catchAsync(async (req, res) => {
   const { commentId } = req.params;
-  const reply = req.body.reply;
+  const reply = req.body;
 
-  await commentService.replyComment(commentId,reply);
+  await commentService.replyComment(commentId,reply,req);
 
   res.json({
     status: httpStatus.OK,
