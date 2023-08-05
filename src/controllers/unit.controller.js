@@ -25,8 +25,8 @@ const getUnit = catchAsync(async (req, res) => {
 
 const createUnit = catchAsync(async (req, res) => {
   const newUnit = req.body;
-
-  const unit = await unitService.createUnit(newUnit);
+  const video = req.file?.path;
+  const unit = await unitService.createUnit(newUnit, video);
 
   res.json({
     status: httpStatus.OK,
@@ -37,8 +37,9 @@ const createUnit = catchAsync(async (req, res) => {
 const updateUnit = catchAsync(async (req, res) => {
   const { unitId } = req.params;
   const updateUnit = req.body;
+  const video = req.file?.path;
 
-  const unit = await unitService.updateUnit(unitId, updateUnit);
+  const unit = await unitService.updateUnit(unitId, updateUnit, video);
 
   res.json({
     status: httpStatus.OK,
