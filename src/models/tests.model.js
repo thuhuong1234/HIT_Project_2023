@@ -18,7 +18,7 @@ const testSchema = new Schema(
       type: Date,
     },
     unit:[{ type: Schema.Types.ObjectId, ref: "Unit" }],
-    createdBy: {type: Schema.Types.ObjectId,ref: "Member",},
+    createdBy: {type: Schema.Types.ObjectId,ref: "Member"},
   },
   {
     timestamps: true,
