@@ -25,7 +25,8 @@ const getTest = catchAsync(async (req, res) => {
 
 const createTest = catchAsync(async (req, res) => {
   const newTest = req.body;
-
+   newTest.createdBy = req.user.id;
+   
   const test = await testService.createTest(newTest);
 
   res.json({

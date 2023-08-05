@@ -4,7 +4,7 @@ const httpStatus = require("http-status");
 const APIFeatures = require("../utils/apiFeatures");
 
 const getMembers = async (query) => {
-  const feature = new APIFeatures(Member.find().select("-password -refreshToken -role"),query)
+  const feature = new APIFeatures(Member.find().select("-password -refreshToken"),query)
     .filter()
     .sort()
     .paginate();

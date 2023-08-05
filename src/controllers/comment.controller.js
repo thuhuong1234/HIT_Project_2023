@@ -24,6 +24,7 @@ const getComment = catchAsync(async (req, res) => {
 
 const createComment = catchAsync(async (req, res) => {
   const newComment = req.body;
+  newComment.commentBy = req.user.id;
 
   const comment = await commentService.createComment(newComment);
 

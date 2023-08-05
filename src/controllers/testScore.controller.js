@@ -24,7 +24,8 @@ const getTestScore = catchAsync(async (req, res) => {
 
 const createTestScore = catchAsync(async (req, res) => {
   const newTestScore = req.body;
-
+  newTestScore.scoredBy = req.user.id;
+  
   const testScore = await testScoreService.createTestScore(newTestScore);
 
   res.json({

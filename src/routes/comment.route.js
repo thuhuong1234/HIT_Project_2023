@@ -5,9 +5,9 @@ const {
   createComment,
   updateComment,
   deleteComment,
+  replyComment,
 } = require("../controllers/comment.controller");
 const authMiddleware = require("../middleware/auth.middleware");
-const { replyComment } = require("../services/comment.service");
 
 const CommentRouter = express.Router();
 

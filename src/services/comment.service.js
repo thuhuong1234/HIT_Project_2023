@@ -25,7 +25,8 @@ const getComment = async (commentId) => {
 };
 
 const createComment = async (newComment) => {
-  if (!newComment.content) {
+
+  if (!newComment.content || !newComment.commentBy) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
       "Comment's information is not enough!"
