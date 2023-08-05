@@ -21,7 +21,7 @@ mongoose
 app.use("/api/v1",router);
 
 app.use("/",(req,res)=>{
-  res.render("Server is working");
+  res.send("Server is working");
 })
 
 app.use(cookieParser);
