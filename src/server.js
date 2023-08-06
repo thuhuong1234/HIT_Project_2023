@@ -20,6 +20,10 @@ mongoose
 
 app.use("/api/v1",router);
 
+app.use("/",(req,res)=>{
+  res.send("Server is working");
+})
+
 app.use(cookieParser);
 
 app.listen(port, () => {

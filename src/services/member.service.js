@@ -5,10 +5,7 @@ const APIFeatures = require("../utils/apiFeatures");
 const ExcelJS = require("exceljs");
 
 const getMembers = async (query) => {
-  const feature = new APIFeatures(
-    Member.find().select("-password -refreshToken -role"),
-    query
-  )
+  const feature = new APIFeatures(Member.find().select("-password -refreshToken"),query)
     .filter()
     .sort()
     .paginate();

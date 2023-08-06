@@ -20,9 +20,13 @@ const getUnit = async (unitId) => {
   return unit;
 };
 
-const createUnit = async (newUnit) => {
+const createUnit = async (newUnit, video) => {
   if (!newUnit.nameUnit) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Name unit is require!");
+  }
+
+  if (!video) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "Video is require!");
   }
 
   const existedUnit = await Unit.findOne({ nameUnit: newUnit.nameUnit });
@@ -30,11 +34,15 @@ const createUnit = async (newUnit) => {
     throw new ApiError(httpStatus.BAD_REQUEST, "Name unit already exists!");
   }
 
-  const unit = await Unit.create(newUnit);
+  const unit = await Unit.create({
+    ...newUnit,
+    video,
+  });
+
   return unit;
 };
 
-const updateUnit = async (unitId, updateUnit) => {
+const updateUnit = async (unitId, updateUnit, video) => {
   const existedUnit = await Unit.findOne({
     nameUnit: updateUnit.nameUnit,
     _id: { $ne: unitId },
@@ -44,9 +52,13 @@ const updateUnit = async (unitId, updateUnit) => {
     throw new ApiError(httpStatus.BAD_REQUEST, "Name unit already exists!");
   }
 
-  const unit = await Unit.findByIdAndUpdate(unitId, updateUnit, {
-    new: true,
-  });
+  const unit = await Unit.findByIdAndUpdate(
+    unitId,
+    { ...updateUnit, video },
+    {
+      new: true,
+    }
+  );
   if (!unit) {
     throw new ApiError(httpStatus.NOTFOUND, "Unit not found!");
   }
