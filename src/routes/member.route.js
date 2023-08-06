@@ -5,6 +5,7 @@ const {
   createMember,
   updateMember,
   deleteMember,
+  exportMembersToExcelFile,
 } = require("../controllers/member.controller");
 const roles = require("../middleware/role.middleware");
 const authMiddleware = require("../middleware/auth.middleware");
@@ -22,5 +23,6 @@ MemberRouter.route("/:memberId")
   .get(getMember)
   .put(upload.single("image"), updateMember)
   .delete(deleteMember);
+
 
 module.exports = MemberRouter;
