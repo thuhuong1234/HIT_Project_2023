@@ -5,7 +5,7 @@ const unitSchema = new Schema(
   {
     nameUnit: {
       type: String,
-      require: true,
+      required: true,
     },
     video: {
       type: String,

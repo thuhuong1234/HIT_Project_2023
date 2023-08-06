@@ -2,6 +2,7 @@ const Member = require("../models/members.model");
 const ApiError = require("../utils/apiError");
 const httpStatus = require("http-status");
 const APIFeatures = require("../utils/apiFeatures");
+const ExcelJS = require("exceljs");
 
 const getMembers = async (query) => {
   const feature = new APIFeatures(
@@ -68,10 +69,38 @@ const deleteMember = async (memberId) => {
   return member;
 };
 
+const exportMembersToExcelFile = async () => {
+  const members = await Member.find();
+
+  const workbook = new ExcelJS.Workbook();
+  const sheet = workbook.addWorksheet(
+    "Member",{headerFooter:{firstHeader: "Members", firstFooter: "Hello World"}}
+  );
+  sheet.columns = [
+    { header: "StudentCode", key: "studentCode", width: 20 },
+    { header: "Name", key: "name", width: 30 },
+    { header: "Email", key: "email", width: 50 },
+    { header: "Role", key: "role", width: 10 },
+  ];
+  members.forEach((member) => {
+    sheet.addRow({
+      studentCode: member.studentCode,
+      name: member.name,
+      email: member.email,
+      role: member.role,
+    });
+  });
+
+  const filePath = "./uploads/members.xlsx";
+  await workbook.xlsx.writeFile(filePath);
+
+  return filePath;
+};
 module.exports = {
   getMembers,
   getMember,
   createMember,
   updateMember,
   deleteMember,
+  exportMembersToExcelFile,
 };

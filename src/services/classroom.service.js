@@ -1,7 +1,9 @@
 const Classroom = require("../models/classrooms.model");
+const Member = require("../models/members.model");
 const ApiError = require("../utils/apiError");
 const httpStatus = require("http-status");
 const APIFeatures = require("../utils/apiFeatures");
+const ExcelJS = require("exceljs");
 
 const getClassrooms = async (query) => {
   const classrooms = new APIFeatures(Classroom.find(), query)
@@ -88,11 +90,11 @@ const addMemberToClassroom = async (classroomId, role, memberId) => {
   }
 
   //check quality is full
-  const count = classroom.members.filter(member => Boolean(member)).length;
-  if(count === classroom.quality){
+  const count = classroom.members.filter((member) => Boolean(member)).length;
+  if (count === classroom.quality) {
     throw new ApiError(httpStatus.NOT_FOUND, "Classroom is full!");
   }
-  
+
   //add member to classroom
   classroom[`${role}s`].push(memberId);
   const addMemberToClassroom = await classroom.save();
@@ -127,6 +129,54 @@ const deleteMemberFromClassroom = async (classroomId, role, memberId) => {
   return deleteMemberFromClassroom;
 };
 
+const getNameMember = async (classroom) => {
+  let members = [];
+  for (let memberId of classroom.members) {
+    const member = await Member.findById(memberId);
+    members.push(member.name);
+  }
+  console.log(members.join("-"));
+  return members.join("-");
+};
+
+const exportClassroomToExcelFile = async () => {
+  const classrooms = await Classroom.find();
+  classrooms.forEach(async (classroom) => {
+    const members = [];
+    for (const memberId of classroom.members) {
+      const member = await Classroom.findOne({ members: memberId });
+      members.push(member);
+    }
+    return members
+  });
+
+  const workbook = new ExcelJS.Workbook();
+  const sheet = workbook.addWorksheet("Classroom");
+  sheet.columns = [
+    { header: "ClassName", key: "className", width: 20 },
+    { header: "Description", key: "description", width: 30 },
+    { header: "Leaders", key: "leaders", width: 50 },
+    { header: "Supports", key: "supports", width: 10 },
+    { header: "Members", key: "members", width: 10 },
+    { header: "Units", key: "units", width: 10 },
+  ];
+  classrooms.forEach((classroom) => {
+    sheet.addRow({
+      className: classroom.className,
+      description: classroom.description,
+      leaders: classroom.leaders,
+      supports: classroom.supports,
+      members: getNameMember(classroom),
+      units: classroom.units,
+    });
+  });
+
+  const filePath = "./uploads/classrooms.xlsx";
+  await workbook.xlsx.writeFile(filePath);
+
+  return filePath;
+};
+
 module.exports = {
   getClassrooms,
   getClassroom,
@@ -135,4 +185,5 @@ module.exports = {
   deleteClassroom,
   addMemberToClassroom,
   deleteMemberFromClassroom,
+  exportClassroomToExcelFile,
 };
