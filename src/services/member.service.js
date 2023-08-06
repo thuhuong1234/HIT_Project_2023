@@ -4,7 +4,10 @@ const httpStatus = require("http-status");
 const APIFeatures = require("../utils/apiFeatures");
 
 const getMembers = async (query) => {
-  const feature = new APIFeatures(Member.find().select("-password -refreshToken"),query)
+  const feature = new APIFeatures(
+    Member.find().select("-password -refreshToken"),
+    query
+  )
     .filter()
     .sort()
     .paginate();
@@ -12,7 +15,9 @@ const getMembers = async (query) => {
 };
 
 const getMember = async (memberId) => {
-  const member = await Member.findById(memberId).select("-password -refreshToken");
+  const member = await Member.findById(memberId).select(
+    "-password -refreshToken"
+  );
   if (!member) {
     throw new ApiError(httpStatus.NOT_FOUND, "Member not found!");
   }
@@ -25,7 +30,8 @@ const createMember = async (newMember) => {
     !newMember.name ||
     !newMember.password ||
     !newMember.studentCode ||
-    !newMember.email
+    !newMember.email ||
+    !newMember.phoneNumber
   ) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,

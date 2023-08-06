@@ -21,6 +21,10 @@ const memberSchema = new Schema(
         }
       },
     },
+    phoneNumber:{
+      type:String,
+      required:true,
+    },
     dateOfBirth: {
       type: Date,
     },
