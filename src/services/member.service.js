@@ -51,7 +51,10 @@ const createMember = async (newMember) => {
   return member;
 };
 
-const updateMember = async (memberId, updateMember) => {
+const updateMember = async (memberId, updateMember,req) => {
+  if(memberId !== req.user.id){
+    throw new ApiError(httpStatus.NOTFOUND, "You can't change information!");
+  }
   const member = await Member.findByIdAndUpdate(memberId, updateMember);
   if (!member) {
     throw new ApiError(httpStatus.NOTFOUND, "Member not found!");
@@ -60,7 +63,10 @@ const updateMember = async (memberId, updateMember) => {
   return member;
 };
 
-const deleteMember = async (memberId) => {
+const deleteMember = async (memberId,req) => {
+  if(memberId !== req.user.id){
+    throw new ApiError(httpStatus.NOTFOUND, "You can't delete this member!");
+  }
   const member = await Member.findByIdAndDelete(memberId);
   if (!member) {
     throw new ApiError(httpStatus.NOTFOUND, "Member not found!");

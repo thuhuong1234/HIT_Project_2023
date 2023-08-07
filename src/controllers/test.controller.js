@@ -25,7 +25,8 @@ const getTest = catchAsync(async (req, res) => {
 
 const createTest = catchAsync(async (req, res) => {
   const newTest = req.body;
-   newTest.createdBy = req.user.id;
+    newTest.content = req.file?.filename;
+    newTest.createdBy = req.user.id; 
    
   const test = await testService.createTest(newTest);
 
@@ -38,7 +39,8 @@ const createTest = catchAsync(async (req, res) => {
 const updateTest = catchAsync(async (req, res) => {
   const { testId } = req.params;
   const updateTest = req.body;
-
+  updateTest.content = req.file?.filename; 
+  
   const test = await testService.updateTest(
     testId,
     updateTest

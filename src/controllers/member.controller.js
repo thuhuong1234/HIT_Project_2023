@@ -39,7 +39,7 @@ const updateMember = catchAsync(async (req, res) => {
   const updateMember = req.body;
   updateMember.image = req.file?.filename;
   
-  const member = await memberService.updateMember(memberId, updateMember);
+  const member = await memberService.updateMember(memberId, updateMember,req);
 
   res.json({
     status: httpStatus.OK,
@@ -49,7 +49,7 @@ const updateMember = catchAsync(async (req, res) => {
 
 const deleteMember = catchAsync(async (req, res) => {
   const { memberId } = req.params;
-  const member = await memberService.deleteMember(memberId);
+  const member = await memberService.deleteMember(memberId,req);
   
   res.json({
     status: httpStatus.OK,

@@ -15,7 +15,9 @@ const fileFilter = (req, file, cb) => {
     file.mimetype.includes("png") ||
     file.mimetype.includes("jpg") ||
     file.mimetype.includes("mp4") ||
-    file.mimetype.includes("video/quicktime")
+    file.mimetype.includes("video/quicktime") ||
+    file.mimetype.includes("pdf") ||
+    file.mimetype.includes("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
   ) {
     cb(null, true);
   } else {
