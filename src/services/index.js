@@ -6,4 +6,4 @@ module.exports.classroomService = require("./classroom.service");
 module.exports.testService = require("./test.service");
 module.exports.commentService = require("./comment.service");
 module.exports.testScoreService= require("./testScore.service")
-
+module.exports.taskService = require("./task.service")

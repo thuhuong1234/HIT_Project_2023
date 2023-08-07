@@ -6,6 +6,7 @@ const classroomRouter = require("../routes/classroom.route");
 const testRouter = require("../routes/test.route");
 const commentRouter = require("./comment.route");
 const testScoreRouter = require("./testScore.route");
+const taskRouter = require("./task.route");
 
 const router = express.Router();
 
@@ -38,6 +39,10 @@ const routes = [
     path: "/testScores",
     route: testScoreRouter,
   },
+  {
+    path: "/tasks",
+    route: taskRouter,
+  }
 ];
 
 routes.map((route) => {
