@@ -4,17 +4,31 @@ const httpStatus = require("http-status");
 const APIFeatures = require("../utils/apiFeatures");
 
 const getTestScores = async (query) => {
-  const testScores = new APIFeatures(TestScore.find(), query).filter().sort().paginate();
+  const testScores = new APIFeatures(TestScore.find(), query)
+    .filter()
+    .sort()
+    .paginate();
 
   return testScores.query;
 };
 
 const getTestScore = async (testScoreId) => {
   const testScore = await TestScore.findById(testScoreId)
-    .populate("member scoredBy", "name -_id")
-    .populate("test", "nameTest -_id")
-    .populate("comments","content -_id");
-    
+    .populate("scoredBy", "name -_id")
+    .populate({
+      path: "task",
+      select:"-_id -createdAt -updatedAt -content -__v",
+      populate: {
+        path: "madeBy",
+        select: "name -_id",
+      },
+      populate: {
+        path: "test",
+        select: "nameTest -_id",
+      }
+    })
+    .populate("comments", "content -_id");
+
   if (!testScore) {
     throw new ApiError(httpStatus.NOT_FOUND, "Test score not found!");
   }
@@ -23,8 +37,11 @@ const getTestScore = async (testScoreId) => {
 };
 
 const createTestScore = async (newTestScore) => {
-  if (!newTestScore.score || !newTestScore.member) {
-    throw new ApiError(httpStatus.BAD_REQUEST,"Test Score's information is not enough!");
+  if (!newTestScore.score || !newTestScore.task) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "Test Score's information is not enough!"
+    );
   }
 
   const testScore = await TestScore.create(newTestScore);
