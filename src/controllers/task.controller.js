@@ -14,7 +14,7 @@ const getTasks = catchAsync(async (req, res) => {
 
 const getTask = catchAsync(async (req, res) => {
   const { taskId } = req.params;
-  console.log(taskId)
+
   const task = await taskService.getTask(taskId);
 
   res.json({
