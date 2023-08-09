@@ -17,17 +17,18 @@ const getTestScore = async (testScoreId) => {
     .populate("scoredBy", "name -_id")
     .populate({
       path: "task",
-      select:"-_id -createdAt -updatedAt -content -__v",
-      populate: {
-        path: "madeBy",
-        select: "name -_id",
-      },
-      populate: {
-        path: "test",
-        select: "nameTest -_id",
-      }
+      select: "-_id -createdAt -updatedAt -content -__v",
+      populate: [
+        {
+          path: "madeBy",
+          select: "name -_id",
+        },
+        {
+          path: "test",
+          select: "nameTest -_id",
+        },
+      ],
     })
-    .populate("comments", "content -_id");
 
   if (!testScore) {
     throw new ApiError(httpStatus.NOT_FOUND, "Test score not found!");

@@ -8,10 +8,6 @@ const testScoreSchema = new Schema(
       type:Number,
       required:true,
     },
-    comments: {
-      type: Schema.Types.ObjectId,
-      ref:"Comment"
-    },
     task:[{ type: Schema.Types.ObjectId, required:true,ref: "Task" }],
     scoredBy: {type: Schema.Types.ObjectId,ref: "Member",},
   },

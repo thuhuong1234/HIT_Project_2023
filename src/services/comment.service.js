@@ -13,10 +13,24 @@ const getComments = async (query) => {
 };
 
 const getComment = async (commentId) => {
-  const comment = await Comment.findById(commentId).populate(
-    "commentBy",
-    "name email -_id"
-  );
+  const comment = await Comment.findById(commentId)
+    .populate("commentBy", "name email -_id")
+    .populate("unit", "nameUnit -_id")
+    .populate({
+      path: "task",
+      select: "-_id -createdAt -updatedAt -content -__v",
+      populate: [
+        {
+          path: "madeBy",
+          select: "name -_id",
+        },
+        {
+          path: "test",
+          select: "nameTest -_id",
+        },
+      ],
+    });
+    
   if (!comment) {
     throw new ApiError(httpStatus.NOT_FOUND, "Comment not found!");
   }
@@ -25,7 +39,6 @@ const getComment = async (commentId) => {
 };
 
 const createComment = async (newComment) => {
-
   if (!newComment.content || !newComment.commentBy) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
@@ -72,13 +85,14 @@ const replyComment = async (commentId, reply, req) => {
   if (!parentComment) {
     throw new ApiError(httpStatus.NOTFOUND, "Parent comment not found!");
   }
-  
+
   const replyComment = new Comment({
     commentBy: req.user.id,
-    unit:parentComment.unit,
+    unit: parentComment.unit,
     content: reply,
     parentId: commentId,
   });
+  
   await replyComment.save();
 
   parentComment.comments.push(replyComment);

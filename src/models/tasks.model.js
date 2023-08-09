@@ -21,14 +21,6 @@ const taskSchema = new Schema(
   }
 );
 
-taskSchema.virtual("madeByName", {
-  ref: "Member",
-  localField: "madeBy",
-  foreignField: "_id",
-  justOne: true,
-  options: { select: "name" },
-});
-
 const Task = mongoose.model("Task", taskSchema);
 
 module.exports = Task;
