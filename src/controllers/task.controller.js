@@ -16,7 +16,7 @@ const getTask = catchAsync(async (req, res) => {
   const { taskId } = req.params;
 
   const task = await taskService.getTask(taskId);
-
+  
   res.json({
     status: httpStatus.OK,
     data: task,

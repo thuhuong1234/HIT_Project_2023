@@ -3,6 +3,7 @@ const router = require("./routes");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
+const errorMiddleware = require("./middleware/error.middleware");
 
 dotenv.config();
 
@@ -25,6 +26,8 @@ app.use("/",(req,res)=>{
 })
 
 app.use(cookieParser);
+
+app.use(errorMiddleware);
 
 app.listen(port, () => {
   console.log("Example app listening on port", `${port}`);

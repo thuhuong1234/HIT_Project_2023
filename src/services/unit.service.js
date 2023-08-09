@@ -13,7 +13,10 @@ const getUnits = async (query) => {
 };
 
 const getUnit = async (unitId) => {
-  const unit = await Unit.findById(unitId);
+  const unit = await Unit.findById(unitId).populate(
+    "createdBy",
+    "name -_id"
+  );
   if (!unit) {
     throw new ApiError(httpStatus.NOT_FOUND, "Unit not found!");
   }

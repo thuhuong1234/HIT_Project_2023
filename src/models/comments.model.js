@@ -25,6 +25,10 @@ const commentSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Unit",
     },
+    task:{
+      type: Schema.Types.ObjectId,
+      ref: "Task",
+    }
   },
   {
     timestamps: true,

@@ -15,7 +15,7 @@ const getTestScore = catchAsync(async (req, res) => {
   const { testScoreId } = req.params;
 
   const testScore = await testScoreService.getTestScore(testScoreId);
- 
+ console.log(testScore.task)
   res.json({
     status: httpStatus.OK,
     data: testScore,

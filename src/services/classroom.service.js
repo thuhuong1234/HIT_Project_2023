@@ -147,7 +147,7 @@ const exportClassroomToExcelFile = async () => {
       const member = await Classroom.findOne({ members: memberId });
       members.push(member);
     }
-    return members
+    return members;
   });
 
   const workbook = new ExcelJS.Workbook();
