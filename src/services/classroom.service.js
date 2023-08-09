@@ -6,7 +6,10 @@ const APIFeatures = require("../utils/apiFeatures");
 const ExcelJS = require("exceljs");
 
 const getClassrooms = async (query) => {
-  const classrooms = new APIFeatures(Classroom.find(), query)
+  const classrooms = new APIFeatures(
+    Classroom.find().populate(["members", "supports", "leaders", "units"]),
+    query
+  )
     .filter()
     .sort()
     .paginate();
@@ -129,26 +132,13 @@ const deleteMemberFromClassroom = async (classroomId, role, memberId) => {
   return deleteMemberFromClassroom;
 };
 
-const getNameMember = async (classroom) => {
-  let members = [];
-  for (let memberId of classroom.members) {
-    const member = await Member.findById(memberId);
-    members.push(member.name);
-  }
-  console.log(members.join("-"));
-  return members.join("-");
-};
-
 const exportClassroomToExcelFile = async () => {
-  const classrooms = await Classroom.find();
-  classrooms.forEach(async (classroom) => {
-    const members = [];
-    for (const memberId of classroom.members) {
-      const member = await Classroom.findOne({ members: memberId });
-      members.push(member);
-    }
-    return members
-  });
+  const classrooms = await Classroom.find().populate([
+    "members",
+    "leaders",
+    "supports",
+    "units",
+  ]);
 
   const workbook = new ExcelJS.Workbook();
   const sheet = workbook.addWorksheet("Classroom");
@@ -160,14 +150,15 @@ const exportClassroomToExcelFile = async () => {
     { header: "Members", key: "members", width: 10 },
     { header: "Units", key: "units", width: 10 },
   ];
+
   classrooms.forEach((classroom) => {
     sheet.addRow({
       className: classroom.className,
       description: classroom.description,
-      leaders: classroom.leaders,
-      supports: classroom.supports,
-      members: getNameMember(classroom),
-      units: classroom.units,
+      leaders: classroom.leaders.map((leader) => leader.name).join("-"),
+      supports: classroom.supports.map((support) => support.name).join("-"),
+      members: classroom.members.map((member) => member.name).join("-"),
+      units: classroom.units.map((unit) => unit.nameUnit).join("-"),
     });
   });
 
