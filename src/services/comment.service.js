@@ -92,6 +92,7 @@ const replyComment = async (commentId, reply, req) => {
     content: reply,
     parentId: commentId,
   });
+  
   await replyComment.save();
 
   parentComment.comments.push(replyComment);

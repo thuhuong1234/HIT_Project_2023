@@ -1,4 +1,5 @@
 const Task = require("../models/tasks.model");
+const Test = require("../models/tests.model")
 const ApiError = require("../utils/apiError");
 const httpStatus = require("http-status");
 const APIFeatures = require("../utils/apiFeatures");
@@ -13,7 +14,7 @@ const getTask = async (taskId) => {
   const task = await Task.findById(taskId)
     .populate("madeBy", "name -_id")
     .populate("test", "nameTest -_id");
-    
+
   if (!task) {
     throw new ApiError(httpStatus.NOT_FOUND, "Task not found!");
   }
@@ -37,6 +38,13 @@ const createTask = async (newTask) => {
     throw new ApiError(httpStatus.BAD_REQUEST, "This task already exists!");
   }
 
+  const test = await Test.findById(newTask.test);
+  const currentTime = new Date();
+  if (currentTime < test.startTime || currentTime > test.endTime) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "Times out!");
+    return;
+  }
+  
   const task = await Task.create(newTask);
 
   return task;
