@@ -50,7 +50,7 @@ const updateClassroom = catchAsync(async (req, res) => {
 
 const deleteClassroom = catchAsync(async (req, res) => {
   const { classroomId } = req.params;
-  
+
   const classroom = await classroomService.deleteClassroom(classroomId);
 
   res.json({
@@ -60,37 +60,45 @@ const deleteClassroom = catchAsync(async (req, res) => {
 });
 
 const addMemberToClassroom = catchAsync(async (req, res) => {
-  const {classroomId} = req.params;
-  const {role, memberId} = req.query;
+  const { classroomId } = req.params;
+  const { role, memberId } = req.query;
 
-  const addMemberToClassroom = await classroomService.addMemberToClassroom(classroomId, role, memberId);
+  const addMemberToClassroom = await classroomService.addMemberToClassroom(
+    classroomId,
+    role,
+    memberId
+  );
 
   res.json({
-    status:httpStatus.CREATED,
-    message:`Member added as ${role} to classroom`,
-    date:addMemberToClassroom
-  })
+    status: httpStatus.CREATED,
+    message: `Member added as ${role} to classroom`,
+    date: addMemberToClassroom,
+  });
 });
 
 const deleteMemberFromClassroom = catchAsync(async (req, res) => {
-  const {classroomId} = req.params;
-  const {role, memberId} = req.query;
+  const { classroomId } = req.params;
+  const { role, memberId } = req.query;
 
-  const deleteMemberFromClassroom = await classroomService.deleteMemberFromClassroom(classroomId, role, memberId);
+  const deleteMemberFromClassroom =
+    await classroomService.deleteMemberFromClassroom(
+      classroomId,
+      role,
+      memberId
+    );
 
   res.json({
-    status:httpStatus.CREATED,
-    message:`Member added as ${role} to classroom`,
-    date:deleteMemberFromClassroom
-  })
+    status: httpStatus.CREATED,
+    message: `Member added as ${role} to classroom`,
+    date: deleteMemberFromClassroom,
+  });
 });
 
 const exportClassroomToExcelFile = catchAsync(async (req, res) => {
   const excelFile = await classroomService.exportClassroomToExcelFile();
-  
-  res.download(excelFile)
 
-}); 
+  res.download(excelFile);
+});
 module.exports = {
   getClassrooms,
   getClassroom,
@@ -99,5 +107,5 @@ module.exports = {
   deleteClassroom,
   addMemberToClassroom,
   deleteMemberFromClassroom,
-  exportClassroomToExcelFile
+  exportClassroomToExcelFile,
 };
